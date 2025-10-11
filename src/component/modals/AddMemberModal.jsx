@@ -76,24 +76,24 @@ const AddMemberModal = ({ setIsOpenModalAdd, getProduk }) => {
           <div className="p-4 space-y-4 text-gray-700">
             <div className="grid gap-4">
               <div className="grid grid-cols-2 items-center gap-4">
-                <label className="text-sm font-medium">ID Member</label>
+                <label className="text-sm font-medium">ID</label>
                 <input
                   type="number"
                   value={idMember}
                   onChange={(e) => setIdMember(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                  placeholder="ID Member"
+                  placeholder="ID"
                 />
               </div>
 
               <div className="grid grid-cols-2 items-center gap-4">
-                <label className="text-sm font-medium">Nama Member</label>
+                <label className="text-sm font-medium">Nickname</label>
                 <input
                   type="text"
                   value={namaMember}
                   onChange={(e) => setNamaMember(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-                  placeholder="Nama Member"
+                  placeholder="Nickname"
                 />
               </div>
             </div>

@@ -132,7 +132,7 @@ const Dashboard = () => {
                   <tr className="text-left">
                     <th className="border px-4 py-2">No</th>
                     <th className="border px-4 py-2 whitespace-nowrap">ID</th>
-                    <th className="border px-4 py-2 whitespace-nowrap">Nama</th>
+                    <th className="border px-4 py-2 whitespace-nowrap">Nickname</th>
                     <th className="border px-4 py-2 whitespace-nowrap">Aksi</th>
                   </tr>
                 </thead>
@@ -145,7 +145,7 @@ const Dashboard = () => {
                           {member.id}
                         </td>
                         <td className="border px-4 py-2">
-                          {capitalizeWords(member.nama)}
+                          {member.nama} MWL
                         </td>
                         <td className="border px-4 py-2 space-x-3 whitespace-nowrap">
                           <button

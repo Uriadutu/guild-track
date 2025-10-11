@@ -160,7 +160,7 @@ const ScoreViewUser = () => {
                         #{i + 1}
                       </div>
                       <div className="text-sm font-medium text-red-800 truncate">
-                        {m.nama}{" "}
+                        {m.nama} MWL{" "}
                         <span className="text-xs text-red-500">({m.id})</span>
                       </div>
 
@@ -205,7 +205,7 @@ const ScoreViewUser = () => {
                     >
                       <td className="border px-4 py-3 text-center">{i + 1}</td>
                       <td className="border px-4 py-3 text-center">{m.id}</td>
-                      <td className="border px-4 py-3">{m.nama}</td>
+                      <td className="border px-4 py-3">{m.nama} MWL</td>
                       <td className="border px-4 py-3 text-center font-bold text-red-600">
                         {scoresMap[m.id]?.score ?? 0}
                       </td>

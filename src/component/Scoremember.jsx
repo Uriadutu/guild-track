@@ -182,7 +182,7 @@ const ScoreMember = () => {
                     <tr>
                       <th className="border px-4 py-2">No</th>
                       <th className="border px-4 py-2">ID</th>
-                      <th className="border px-4 py-2">Nama</th>
+                      <th className="border px-4 py-2">Nickname</th>
                       <th className="border px-4 py-2">Score</th>
                     </tr>
                   </thead>
@@ -198,7 +198,7 @@ const ScoreMember = () => {
                             {index + 1}
                           </td>
                           <td className="border px-4 py-2 whitespace-nowrap">{member.id}</td>
-                          <td className="border px-4 py-2 whitespace-nowrap">{member.nama}</td>
+                          <td className="border px-4 py-2 whitespace-nowrap">{member.nama} MWL</td>
                           <td className="border px-4 py-2 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <input
