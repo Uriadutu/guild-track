@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tombol Tambah (Hijau) */
+.btn-add {
+  @apply px-4 py-2 mb-0 bg-red-600 text-white font-semibold text-sm rounded-lg shadow hover:bg-red-700 transition duration-300;
+}
+
+/* Tombol Batal (Putih) */
+.btn-batal {
+  @apply px-4 py-2 mb-0 bg-white border border-gray-300 text-gray-700 text-sm rounded-lg hover:bg-gray-100 transition duration-300;
+}
+
+/* Input */
+.input {
+  @apply p-3 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition;
+}
+
+/* Label Input */
+.label-input {
+  @apply text-gray-700 mb-1 mt-2 font-medium;
+}
+
+/* Tombol Simpan (Kuning) */
+.btn-simpan {
+  @apply px-4 py-2 mb-0 bg-yellow-500 text-white font-semibold text-sm rounded-lg hover:bg-yellow-400 transition duration-300;
+}
+
+/* Button Detail / Edit / Delete */
+.detail, .edit, .delete {
+  @apply py-1.5 px-4 text-xs font-medium text-white bg-gray-700 border border-gray-600 rounded-md hover:bg-gray-800 transition;
+}
+
+/* Jika ingin dibedakan warna: */
+.detail {
+  @apply bg-blue-600 hover:bg-blue-700;
+}
+.edit {
+  @apply bg-yellow-600 hover:bg-yellow-700;
+}
+.delete {
+  @apply bg-red-600 hover:bg-red-700;
+}
