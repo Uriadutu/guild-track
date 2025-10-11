@@ -190,7 +190,7 @@ const ScoreViewUser = () => {
                       ID
                     </th>
                     <th className="border px-4 py-3 text-left font-semibold">
-                      Nama
+                      Nickname
                     </th>
                     <th className="border px-4 py-3 text-center font-semibold">
                       Score
