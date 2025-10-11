@@ -1,5 +1,4 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React from "react"; 
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
@@ -17,16 +16,6 @@ const Navbar = () => {
 
         </h1>
 
-        <div className="flex items-center">
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className=" px-6 py-3 bg-red-500  hidden md:block  rounded-full text-white font-semibold border border-gray-300 hover:bg-red-600 transition"
-            onClick={() => navigate("/masuk")}
-          >
-            Mulai Sekarang
-          </motion.button>       
-        </div>
       </div>
 
      

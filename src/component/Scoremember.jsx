@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
+import React, {
+  useState,
+  useEffect,
+  useMemo,
+  useCallback,
+  useRef,
+} from "react";
 import { db } from "../auth/Firebase";
 import {
   collection,
@@ -41,7 +47,9 @@ const ScoreMember = () => {
     try {
       const [memberSnapshot, scoreSnapshot] = await Promise.all([
         getDocs(collection(db, "member")),
-        getDocs(query(collection(db, "score"), where("tanggal", "==", selectedDate))),
+        getDocs(
+          query(collection(db, "score"), where("tanggal", "==", selectedDate))
+        ),
       ]);
 
       const memberData = memberSnapshot.docs.map((d) => ({
@@ -147,12 +155,6 @@ const ScoreMember = () => {
     );
   }
 
-  // Hitung Top 4 Score
-  const top4 = members
-    .map((m) => ({ ...m, score: scoresMap[m.id]?.score ?? 0 }))
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 4);
-
   return (
     <div className="p-2">
       {/* ===================== HALAMAN WEB ===================== */}
@@ -166,11 +168,7 @@ const ScoreMember = () => {
         <div className="px-3 py-4">
           <div className="flex justify-between items-center mb-4">
             <div className="flex gap-2">
-             
-              <button
-                onClick={handlePrint}
-                className="btn-add"
-              >
+              <button onClick={handlePrint} className="btn-add">
                 Export PDF
               </button>
             </div>
@@ -208,22 +206,37 @@ const ScoreMember = () => {
                   </thead>
                   <tbody>
                     {filteredMembers.map((member, index) => {
-                      const currentScore = editedScores[member.id] ?? scoresMap[member.id]?.score ?? 0;
+                      const currentScore =
+                        editedScores[member.id] ??
+                        scoresMap[member.id]?.score ??
+                        0;
                       return (
                         <tr key={member.id} className="hover:bg-gray-50">
-                          <td className="border px-4 py-2 text-center">{index + 1}</td>
-                          <td className="border px-4 py-2 whitespace-nowrap">{member.id}</td>
-                          <td className="border px-4 py-2 whitespace-nowrap">{member.nama}</td>
+                          <td className="border px-4 py-2 text-center">
+                            {index + 1}
+                          </td>
+                          <td className="border px-4 py-2 whitespace-nowrap">
+                            {member.id}
+                          </td>
+                          <td className="border px-4 py-2 whitespace-nowrap">
+                            {member.nama}
+                          </td>
                           <td className="border px-4 py-2 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <input
                                 type="number"
                                 value={currentScore}
-                                onFocus={(e) => { if(e.target.value === "0") e.target.value = ""; }}
-                                onChange={(e) => handleScoreChange(member.id, e.target.value)}
+                                onFocus={(e) => {
+                                  if (e.target.value === "0")
+                                    e.target.value = "";
+                                }}
+                                onChange={(e) =>
+                                  handleScoreChange(member.id, e.target.value)
+                                }
                                 onBlur={(e) => {
                                   if (e.target.value === "") {
-                                    const oldScore = scoresMap[member.id]?.score ?? 0;
+                                    const oldScore =
+                                      scoresMap[member.id]?.score ?? 0;
                                     e.target.value = oldScore;
                                     handleScoreChange(member.id, oldScore);
                                   }
@@ -231,7 +244,8 @@ const ScoreMember = () => {
                                 className="w-24 px-2 py-1 border border-gray-300 rounded text-right"
                               />
                               {editedScores[member.id] !== undefined &&
-                                Number(editedScores[member.id]) !== Number(scoresMap[member.id]?.score ?? 0) && (
+                                Number(editedScores[member.id]) !==
+                                  Number(scoresMap[member.id]?.score ?? 0) && (
                                   <button
                                     onClick={() => handleSaveScore(member.id)}
                                     disabled={loading}
@@ -256,12 +270,12 @@ const ScoreMember = () => {
       {/* ===================== HALAMAN PDF ===================== */}
       <div className="hidden pdf-container" ref={printRef}>
         <div className="p-6 font-sans">
-          <h1 className="text-3xl font-bold text-center mb-1">Scoreboard MENDAWAI EXCELLENT</h1>
+          <h1 className="text-3xl font-bold text-center mb-1">
+            Scoreboard MENDAWAI EXCELLENT
+          </h1>
           <p className="text-center text-gray-700 mb-4">
             tanggal {parseAndFormatDateString(selectedDate)}
           </p>
-
-          
 
           <table className="min-w-full border-collapse border border-gray-400">
             <thead>
@@ -277,13 +291,30 @@ const ScoreMember = () => {
                 const score = scoresMap[member.id]?.score ?? 0;
                 return (
                   <tr key={member.id}>
-                    <td className="border px-4 py-2 text-center">{index + 1}</td>
+                    <td className="border px-4 py-2 text-center">
+                      {index + 1}
+                    </td>
                     <td className="border px-4 py-2">{member.id}</td>
                     <td className="border px-4 py-2">{member.nama}</td>
-                    <td className="border px-4 py-2 text-center font-bold">{score}</td>
+                    <td className="border px-4 py-2 text-center font-bold">
+                      {score}
+                    </td>
                   </tr>
                 );
               })}
+
+              {/* Tambahkan baris total */}
+              <tr className="bg-red-100 font-bold">
+                <td className="border px-4 py-2 text-center" colSpan={3}>
+                  Total Score
+                </td>
+                <td className="border px-4 py-2 text-center">
+                  {Object.values(scoresMap).reduce(
+                    (sum, item) => sum + (item.score || 0),
+                    0
+                  )}
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

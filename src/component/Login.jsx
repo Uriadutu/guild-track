@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  signInWithEmailAndPassword,
-} from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../auth/Firebase";
 import Logo from "../img/sp.png";
 
@@ -34,7 +32,6 @@ const Login = () => {
     }
   };
 
-
   return (
     <div className="relative bg-white w-full h-screen flex items-center justify-center px-4">
       <div className="absolute w-[300px] h-[200px] bg-red-300 opacity-30 blur-3xl rounded-full top-5 left-5 md:w-[400px] md:h-[250px] md:left-32"></div>
@@ -48,7 +45,16 @@ const Login = () => {
           >
             {/* Logo & Judul */}
             <div className="flex flex-col w-full items-center">
-              <img src={Logo} alt="Logo" className="w-24 sm:w-28 mb-2" />
+              <img
+                src={Logo}
+                alt="Logo"
+                className="w-24 sm:w-28 mb-2"
+                style={{
+                  filter:
+                    "invert(0.1) sepia(1) saturate(5000%) hue-rotate(-10deg)",
+                }}
+              />
+
               <div className="relative w-full z-10 mb-3">
                 <div className="text-gray-800 text-center z-10 absolute flex w-full justify-center font-semibold text-2xl">
                   <p className="bg-white px-3 sm:text-2xl text-lg">Masuk</p>
@@ -110,10 +116,7 @@ const Login = () => {
         <div className="bg-white p-4 mt-3 shadow-md w-full max-w-2xl rounded-[2px] text-center">
           <p className="text-gray-700 text-sm">
             Belum Mempunyai Akun?{" "}
-            <Link
-              to={"/"}
-              className="text-red-500 font-medium hover:underline"
-            >
+            <Link to={"/"} className="text-red-500 font-medium hover:underline">
               Kembali
             </Link>
           </p>

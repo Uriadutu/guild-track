@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from "react";
 import { db } from "../../auth/Firebase";
-import { collection, getDocs, query, where, orderBy } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { IoSearch } from "react-icons/io5";
 import { parseAndFormatDateString } from "../../utils/helper";
 

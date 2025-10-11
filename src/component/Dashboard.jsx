@@ -11,14 +11,16 @@ import {
 import AddMemberModal from "./modals/AddMemberModal";
 import { AnimatePresence } from "framer-motion";
 import { IoSearch } from "react-icons/io5";
-import { capitalizeWords } from "../utils/helper";
 import { toast } from "react-toastify";
+import EditMemberModal from "./modals/EditMemberModal";
 
 const Dashboard = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [dataMember, setDataMember] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [fetching, setFetching] = useState(true);
+  const [isOpenEdit, setIsOpenEdit] = useState(false);
+  const [selectedMember, setSelectedMember] = useState(null);
 
   // 🔹 Ambil semua member (real-time)
   const getMember = () => {
@@ -41,6 +43,11 @@ const Dashboard = () => {
     } finally {
       setFetching(false);
     }
+  };
+
+  const handleEditClick = (member) => {
+    setSelectedMember(member);
+    setIsOpenEdit(true);
   };
 
   useEffect(() => {
@@ -76,6 +83,8 @@ const Dashboard = () => {
       member.id.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // render modal
+
   if (fetching) {
     return (
       <div className="fixed inset-0 flex flex-col items-center justify-center  text-gray-600 z-50">
@@ -94,6 +103,13 @@ const Dashboard = () => {
           <AddMemberModal
             setIsOpenModalAdd={setOpenAddModal}
             getProduk={getMember}
+          />
+        )}
+        {isOpenEdit && (
+          <EditMemberModal
+            setIsOpenModalEdit={setIsOpenEdit}
+            getProduk={getMember} // refresh list
+            member={selectedMember}
           />
         )}
       </AnimatePresence>
@@ -132,7 +148,9 @@ const Dashboard = () => {
                   <tr className="text-left">
                     <th className="border px-4 py-2">No</th>
                     <th className="border px-4 py-2 whitespace-nowrap">ID</th>
-                    <th className="border px-4 py-2 whitespace-nowrap">Nickname</th>
+                    <th className="border px-4 py-2 whitespace-nowrap">
+                      Nickname
+                    </th>
                     <th className="border px-4 py-2 whitespace-nowrap">Aksi</th>
                   </tr>
                 </thead>
@@ -144,15 +162,19 @@ const Dashboard = () => {
                         <td className="border px-4 py-2 text-blue-600 font-medium whitespace-nowrap">
                           {member.id}
                         </td>
-                        <td className="border px-4 py-2">
-                          {member.nama} MWL
-                        </td>
+                        <td className="border px-4 py-2">{member.nama} MWL</td>
                         <td className="border px-4 py-2 space-x-3 whitespace-nowrap">
                           <button
                             onClick={() => handleDelete(member.docId)}
                             className="text-red-500 hover:underline"
                           >
                             Hapus
+                          </button>
+                          <button
+                            onClick={() => handleEditClick(member)}
+                            className="text-red-500 hover:underline"
+                          >
+                            Edit
                           </button>
                         </td>
                       </tr>
