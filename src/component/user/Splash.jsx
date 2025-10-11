@@ -25,7 +25,7 @@ const Splash = () => {
         >
           <img
             src={foto}
-            alt="Greyy
+            alt="GuildTrack
 "
             className="w-[70%] max-w-xs sm:max-w-sm md:max-w-md"
           />
