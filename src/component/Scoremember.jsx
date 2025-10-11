@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from "react";
+import React, { useState, useEffect, useMemo, useCallback, useRef } from "react";
 import { db } from "../auth/Firebase";
 import {
   collection,
@@ -11,8 +11,9 @@ import {
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { IoSearch } from "react-icons/io5";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { parseAndFormatDateString } from "../utils/helper";
+import { useReactToPrint } from "react-to-print";
 
 const ScoreMember = () => {
   const [members, setMembers] = useState([]);
@@ -26,14 +27,21 @@ const ScoreMember = () => {
   const { tanggal } = useParams();
   const selectedDate = tanggal || new Date().toISOString().split("T")[0];
 
+  // Ref untuk print PDF
+  const printRef = useRef();
+
+  const handlePrint = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: `Score_${selectedDate}`,
+  });
+
+  // Fetch member + score
   const getMembersWithScores = useCallback(async () => {
     setFetching(true);
     try {
       const [memberSnapshot, scoreSnapshot] = await Promise.all([
         getDocs(collection(db, "member")),
-        getDocs(
-          query(collection(db, "score"), where("tanggal", "==", selectedDate))
-        ),
+        getDocs(query(collection(db, "score"), where("tanggal", "==", selectedDate))),
       ]);
 
       const memberData = memberSnapshot.docs.map((d) => ({
@@ -139,8 +147,15 @@ const ScoreMember = () => {
     );
   }
 
+  // Hitung Top 4 Score
+  const top4 = members
+    .map((m) => ({ ...m, score: scoresMap[m.id]?.score ?? 0 }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4);
+
   return (
     <div className="p-2">
+      {/* ===================== HALAMAN WEB ===================== */}
       <div className="bg-white rounded shadow-lg w-full overflow-hidden">
         <header className="border-b px-6 py-5 bg-gray-50 flex justify-between items-center">
           <h1 className="text-2xl font-bold text-gray-800">
@@ -150,9 +165,15 @@ const ScoreMember = () => {
 
         <div className="px-3 py-4">
           <div className="flex justify-between items-center mb-4">
-            <Link to="/tanggal" className="btn-batal">
-              Kembali
-            </Link>
+            <div className="flex gap-2">
+             
+              <button
+                onClick={handlePrint}
+                className="btn-add"
+              >
+                Export PDF
+              </button>
+            </div>
             <div className="flex p-2 border rounded border-gray-200 items-center">
               <input
                 type="text"
@@ -169,7 +190,6 @@ const ScoreMember = () => {
             Total Score: <span className="text-red-600">{totalScore}</span>
           </div>
 
-          {/* ✅ Jika tidak ada data */}
           {filteredMembers.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-16 text-gray-500">
               <p className="text-lg font-medium">Data Tidak Ada</p>
@@ -188,33 +208,22 @@ const ScoreMember = () => {
                   </thead>
                   <tbody>
                     {filteredMembers.map((member, index) => {
-                      const currentScore =
-                        editedScores[member.id] ??
-                        scoresMap[member.id]?.score ??
-                        0;
+                      const currentScore = editedScores[member.id] ?? scoresMap[member.id]?.score ?? 0;
                       return (
                         <tr key={member.id} className="hover:bg-gray-50">
-                          <td className="border px-4 py-2 text-center">
-                            {index + 1}
-                          </td>
+                          <td className="border px-4 py-2 text-center">{index + 1}</td>
                           <td className="border px-4 py-2 whitespace-nowrap">{member.id}</td>
-                          <td className="border px-4 py-2 whitespace-nowrap">{member.nama} MWL</td>
+                          <td className="border px-4 py-2 whitespace-nowrap">{member.nama}</td>
                           <td className="border px-4 py-2 whitespace-nowrap">
                             <div className="flex items-center gap-2">
                               <input
                                 type="number"
                                 value={currentScore}
-                                onFocus={(e) => {
-                                  if (e.target.value === "0")
-                                    e.target.value = "";
-                                }}
-                                onChange={(e) =>
-                                  handleScoreChange(member.id, e.target.value)
-                                }
+                                onFocus={(e) => { if(e.target.value === "0") e.target.value = ""; }}
+                                onChange={(e) => handleScoreChange(member.id, e.target.value)}
                                 onBlur={(e) => {
                                   if (e.target.value === "") {
-                                    const oldScore =
-                                      scoresMap[member.id]?.score ?? 0;
+                                    const oldScore = scoresMap[member.id]?.score ?? 0;
                                     e.target.value = oldScore;
                                     handleScoreChange(member.id, oldScore);
                                   }
@@ -222,8 +231,7 @@ const ScoreMember = () => {
                                 className="w-24 px-2 py-1 border border-gray-300 rounded text-right"
                               />
                               {editedScores[member.id] !== undefined &&
-                                Number(editedScores[member.id]) !==
-                                  Number(scoresMap[member.id]?.score ?? 0) && (
+                                Number(editedScores[member.id]) !== Number(scoresMap[member.id]?.score ?? 0) && (
                                   <button
                                     onClick={() => handleSaveScore(member.id)}
                                     disabled={loading}
@@ -242,6 +250,42 @@ const ScoreMember = () => {
               </div>
             </div>
           )}
+        </div>
+      </div>
+
+      {/* ===================== HALAMAN PDF ===================== */}
+      <div className="hidden pdf-container" ref={printRef}>
+        <div className="p-6 font-sans">
+          <h1 className="text-3xl font-bold text-center mb-1">Nama Guild MWL</h1>
+          <p className="text-center text-gray-700 mb-4">
+            Scoreboard tanggal {parseAndFormatDateString(selectedDate)}
+          </p>
+
+          
+
+          <table className="min-w-full border-collapse border border-gray-400">
+            <thead>
+              <tr className="bg-red-200">
+                <th className="border px-4 py-2">No</th>
+                <th className="border px-4 py-2">ID</th>
+                <th className="border px-4 py-2">Nickname</th>
+                <th className="border px-4 py-2">Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              {members.map((member, index) => {
+                const score = scoresMap[member.id]?.score ?? 0;
+                return (
+                  <tr key={member.id}>
+                    <td className="border px-4 py-2 text-center">{index + 1}</td>
+                    <td className="border px-4 py-2">{member.id}</td>
+                    <td className="border px-4 py-2">{member.nama}</td>
+                    <td className="border px-4 py-2 text-center font-bold">{score}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>

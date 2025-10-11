@@ -42,3 +42,16 @@
 .delete {
   @apply bg-red-600 hover:bg-red-700;
 }
+
+
+@media screen {
+  .pdf-container {
+    display: none;
+  }
+}
+
+@media print {
+  .pdf-container {
+    display: block;
+  }
+}
