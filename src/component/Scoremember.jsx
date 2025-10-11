@@ -256,9 +256,9 @@ const ScoreMember = () => {
       {/* ===================== HALAMAN PDF ===================== */}
       <div className="hidden pdf-container" ref={printRef}>
         <div className="p-6 font-sans">
-          <h1 className="text-3xl font-bold text-center mb-1">Nama Guild MWL</h1>
+          <h1 className="text-3xl font-bold text-center mb-1">Scoreboard MENDAWAI EXCELLENT</h1>
           <p className="text-center text-gray-700 mb-4">
-            Scoreboard tanggal {parseAndFormatDateString(selectedDate)}
+            tanggal {parseAndFormatDateString(selectedDate)}
           </p>
 
           
