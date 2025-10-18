@@ -219,7 +219,7 @@ const ScoreMember = () => {
                             {member.id}
                           </td>
                           <td className="border px-4 py-2 whitespace-nowrap">
-                            {member.nama}
+                            {member.nama} MWL
                           </td>
                           <td className="border px-4 py-2 whitespace-nowrap">
                             <div className="flex items-center gap-2">
