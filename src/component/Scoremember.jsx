@@ -295,7 +295,7 @@ const ScoreMember = () => {
                       {index + 1}
                     </td>
                     <td className="border px-4 py-2">{member.id}</td>
-                    <td className="border px-4 py-2">{member.nama}</td>
+                    <td className="border px-4 py-2">{member.nama} MWL</td>
                     <td className="border px-4 py-2 text-center font-bold">
                       {score}
                     </td>
